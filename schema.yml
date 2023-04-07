@@ -1,0 +1,935 @@
+openapi: 3.1.0
+x-stoplight:
+  id: ljffzhgkd9n7o
+info:
+  title: video_host_api
+  version: '3.0'
+  description: 'フロントエンド: https://github.com/xpadev-net/video_host_frontend'
+  summary: 自宅メディアサーバー用のAPI定義
+  license:
+    name: MIT
+servers: []
+paths:
+  /auth:
+    post:
+      summary: ''
+      operationId: post-auth
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: vljks9ltfjxl1
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: 1dzhtnisun2ip
+                required:
+                  - code
+                  - status
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    status: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 8lc4pdiiebmyc
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: ydpbyxrjjphib
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: ks3g1r988lz8a
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: incorrect username or password
+      description: 認証用API
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  x-stoplight:
+                    id: ks7juu8klgani
+                password:
+                  type: string
+                  x-stoplight:
+                    id: tfssh5q29tdxt
+              required:
+                - username
+                - password
+        description: ''
+  /tryAuth:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                required:
+                  - code
+                  - sutatus
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+  /logout:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                required:
+                  - code
+                  - sutatus
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+    parameters: []
+  /movie:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: |-
+            OK
+
+            prev/nextはnullable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  data:
+                    type: object
+                    x-stoplight:
+                      id: q1ncsynfh5bt6
+                    required:
+                      - playlist
+                      - source
+                    properties:
+                      playlist:
+                        type: array
+                        x-stoplight:
+                          id: 3y78dv9wf1i10
+                        items:
+                          $ref: '#/components/schemas/Movie'
+                          x-stoplight:
+                            id: xyawopa50qjkh
+                      prev:
+                        $ref: '#/components/schemas/Movie'
+                        x-stoplight:
+                          id: 9fcqlow0wh1v1
+                        description: nullable
+                      next:
+                        $ref: '#/components/schemas/Movie'
+                        x-stoplight:
+                          id: 3rtfp97zrdqp6
+                        description: nullable
+                      source:
+                        type: object
+                        x-stoplight:
+                          id: ti5rl3fplh7fi
+                        properties:
+                          http:
+                            type: string
+                            x-stoplight:
+                              id: w52lz9g5f5vze
+                          hls:
+                            type: string
+                            x-stoplight:
+                              id: wynf7epuzcqpk
+                required:
+                  - code
+                  - sutatus
+                  - data
+              examples: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+    parameters: []
+  /search:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  movies:
+                    type: array
+                    x-stoplight:
+                      id: 02io90y9h6st4
+                    items:
+                      $ref: '#/components/schemas/Movie'
+                      x-stoplight:
+                        id: aisj9cvrp1bmj
+                  series:
+                    type: array
+                    x-stoplight:
+                      id: 3ffw529tojlyq
+                    items:
+                      x-stoplight:
+                        id: 0whqs4vn10u0l
+                      type: object
+                      properties:
+                        seriesTitle:
+                          type: string
+                          x-stoplight:
+                            id: m9606symc6j8l
+                        seriesUrl:
+                          type: string
+                          x-stoplight:
+                            id: nhwxfd67ilub8
+                      required:
+                        - seriesTitle
+                        - seriesUrl
+                required:
+                  - code
+                  - sutatus
+                  - movies
+                  - series
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+        '':
+          description: ''
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+    parameters: []
+  /series:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  movies:
+                    type: array
+                    x-stoplight:
+                      id: 02io90y9h6st4
+                    items:
+                      $ref: '#/components/schemas/Movie'
+                      x-stoplight:
+                        id: aisj9cvrp1bmj
+                  title:
+                    type: string
+                    x-stoplight:
+                      id: 3ffw529tojlyq
+                required:
+                  - code
+                  - sutatus
+                  - movies
+                  - title
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: u4in4qsdrjfzw
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: yzagcak6onn6h
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: nanj3mj7dg7dk
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '404'
+                    status: fail
+                    message: not found
+        '':
+          description: ''
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+    parameters: []
+  /comments:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  comments:
+                    type: array
+                    x-stoplight:
+                      id: p8ct7x9tongy1
+                    items:
+                      $ref: '#/components/schemas/v1Comment'
+                      x-stoplight:
+                        id: 6g7fzmgb6dhfd
+                required:
+                  - code
+                  - sutatus
+                  - comments
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+    parameters: []
+  '/suggest/{query}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: 431gvhibkkiaw
+                    items:
+                      x-stoplight:
+                        id: lrgocob2mza02
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          x-stoplight:
+                            id: 9v5f3zvsuw5jb
+                      required:
+                        - title
+                required:
+                  - code
+                  - sutatus
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+                    data:
+                      - title: hoge
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+      description: 検索用サジェストAPI
+    parameters:
+      - schema:
+          type: string
+        name: query
+        in: path
+        required: true
+  /recentUpdates:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: y13z2jy2aktww
+                  sutatus:
+                    type: string
+                    x-stoplight:
+                      id: o3p14d1p5ypt4
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: ho4hgc6svsu9f
+                    items:
+                      x-stoplight:
+                        id: mhefjl79xgavi
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          x-stoplight:
+                            id: q9dxy00uydr7i
+                        seriesUrl:
+                          type: string
+                          x-stoplight:
+                            id: 8ix0om2bvepga
+                        movies:
+                          type: array
+                          x-stoplight:
+                            id: 14rr7e9a1dwa2
+                          items:
+                            $ref: '#/components/schemas/Movie'
+                            x-stoplight:
+                              id: tjlcm6vwrgedp
+                      required:
+                        - title
+                        - seriesUrl
+                        - movies
+                required:
+                  - code
+                  - sutatus
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: 17y4l3n3feh7a
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: dupb4b9yyntw7
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: f2hocagkywsfs
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '401'
+                    status: fail
+                    message: invalid token
+      operationId: get-tryAuth
+      parameters:
+        - schema:
+            type: string
+          in: cookie
+          name: token
+          description: 認証トークン
+      description: 直近の更新を返すAPI
+    parameters: []
+  '/img/{movieUrl}':
+    parameters:
+      - schema:
+          type: string
+        name: movieUrl
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: webp画像のバイナリデータ
+          content:
+            image/webp:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    x-stoplight:
+                      id: bnhcvbgz2sfk9
+                  status:
+                    type: string
+                    x-stoplight:
+                      id: qt178g4mmkw1p
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: g618n6bhinbi2
+                required:
+                  - code
+                  - status
+                  - message
+              examples:
+                Example 1:
+                  value:
+                    code: '400'
+                    status: fail
+                    message: bad request
+        '404':
+          description: 404用画像のバイナリデータ
+          content:
+            image/png:
+              schema:
+                type: string
+      operationId: get-img-movieUrl
+components:
+  schemas:
+    Movie:
+      title: Movie
+      x-stoplight:
+        id: rnnfwni3kl1cs
+      type: object
+      properties:
+        id:
+          type: number
+        url:
+          type: string
+          x-stoplight:
+            id: rlda80os5yv3n
+        seriesUrl:
+          type: string
+          x-stoplight:
+            id: wbk7hj4hoktk4
+        title:
+          type: string
+          x-stoplight:
+            id: 9vy2he21m3x9v
+        seriesTitle:
+          type: string
+          x-stoplight:
+            id: tyvwxb8oocrv1
+        duration:
+          type: number
+          x-stoplight:
+            id: fu03g9las4pg8
+        addAt:
+          type: number
+          x-stoplight:
+            id: 1alxsu1p79qeq
+    v1Comment:
+      title: v1Comment
+      x-stoplight:
+        id: b6dbl37dv8tay
+      type: object
+      properties:
+        body:
+          type: string
+          x-stoplight:
+            id: 42bpx9q6if7hj
+        commands:
+          type: array
+          x-stoplight:
+            id: ydvptekn1mg3a
+          items:
+            x-stoplight:
+              id: sgf21g1beml9x
+            type: string
+        id:
+          type: string
+          x-stoplight:
+            id: f2ch10sb5mwts
+        isMyPost:
+          type: boolean
+          x-stoplight:
+            id: o9ykdnlkwpb42
+        isPremium:
+          type: boolean
+          x-stoplight:
+            id: yg19xmllt2ekk
+        nicoruCount:
+          type: number
+          x-stoplight:
+            id: zbr62e3p0v4w6
+        'no':
+          type: number
+          x-stoplight:
+            id: i508zspysikef
+        postedAt:
+          type: string
+          x-stoplight:
+            id: rm1bkiukykgrg
+        score:
+          type: number
+          x-stoplight:
+            id: 8shyvla3zwg1r
+        source:
+          type: string
+          x-stoplight:
+            id: 7xittyqoltxiw
+        userId:
+          type: string
+          x-stoplight:
+            id: hqtd6hfl7eqx0
+        vposMs:
+          type: number
+          x-stoplight:
+            id: 7b74bdl0p4x4x
+      description: ''
+  securitySchemes: {}
