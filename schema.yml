@@ -245,6 +245,7 @@ paths:
                       id: q1ncsynfh5bt6
                     required:
                       - playlist
+                      - movie
                       - source
                     properties:
                       playlist:
@@ -255,6 +256,10 @@ paths:
                           $ref: '#/components/schemas/Movie'
                           x-stoplight:
                             id: xyawopa50qjkh
+                      movie:
+                        $ref: '#/components/schemas/Movie'
+                        x-stoplight:
+                          id: zx1mttasuy85p
                       prev:
                         $ref: '#/components/schemas/Movie'
                         x-stoplight:
@@ -269,6 +274,9 @@ paths:
                         type: object
                         x-stoplight:
                           id: ti5rl3fplh7fi
+                        required:
+                          - http
+                          - hls
                         properties:
                           http:
                             type: string
@@ -340,39 +348,46 @@ paths:
                     type: string
                     x-stoplight:
                       id: o3p14d1p5ypt4
-                  movies:
-                    type: array
+                  data:
+                    type: object
                     x-stoplight:
-                      id: 02io90y9h6st4
-                    items:
-                      $ref: '#/components/schemas/Movie'
-                      x-stoplight:
-                        id: aisj9cvrp1bmj
-                  series:
-                    type: array
-                    x-stoplight:
-                      id: 3ffw529tojlyq
-                    items:
-                      x-stoplight:
-                        id: 0whqs4vn10u0l
-                      type: object
-                      properties:
-                        seriesTitle:
-                          type: string
+                      id: etw0kzofcrr31
+                    required:
+                      - movies
+                      - series
+                    properties:
+                      movies:
+                        type: array
+                        x-stoplight:
+                          id: gk33hcmtybpts
+                        items:
+                          $ref: '#/components/schemas/Movie'
                           x-stoplight:
-                            id: m9606symc6j8l
-                        seriesUrl:
-                          type: string
+                            id: 2jjxgcqwx92i9
+                      series:
+                        type: array
+                        x-stoplight:
+                          id: 7kviby84gjvur
+                        items:
                           x-stoplight:
-                            id: nhwxfd67ilub8
-                      required:
-                        - seriesTitle
-                        - seriesUrl
+                            id: kzkfb9fkonej7
+                          type: object
+                          properties:
+                            seriesTitle:
+                              type: string
+                              x-stoplight:
+                                id: 5zrjh5e3pm904
+                            seriesUrl:
+                              type: string
+                              x-stoplight:
+                                id: d8wgzzemogy5k
+                          required:
+                            - seriesTitle
+                            - seriesUrl
                 required:
                   - code
                   - sutatus
-                  - movies
-                  - series
+                  - data
               examples:
                 Example 1:
                   value:
@@ -437,23 +452,30 @@ paths:
                     type: string
                     x-stoplight:
                       id: o3p14d1p5ypt4
-                  movies:
-                    type: array
+                  data:
+                    type: object
                     x-stoplight:
-                      id: 02io90y9h6st4
-                    items:
-                      $ref: '#/components/schemas/Movie'
-                      x-stoplight:
-                        id: aisj9cvrp1bmj
-                  title:
-                    type: string
-                    x-stoplight:
-                      id: 3ffw529tojlyq
+                      id: aoqifao2lrx2d
+                    required:
+                      - movies
+                      - seriesTitle
+                    properties:
+                      movies:
+                        type: array
+                        x-stoplight:
+                          id: 03tlntprc8lsu
+                        items:
+                          $ref: '#/components/schemas/Movie'
+                          x-stoplight:
+                            id: d4mo5q51lymh4
+                      seriesTitle:
+                        type: string
+                        x-stoplight:
+                          id: 9x02wo5qxif8l
                 required:
                   - code
                   - sutatus
-                  - movies
-                  - title
+                  - data
               examples:
                 Example 1:
                   value:
@@ -547,18 +569,25 @@ paths:
                     type: string
                     x-stoplight:
                       id: o3p14d1p5ypt4
-                  comments:
-                    type: array
+                  data:
+                    type: object
                     x-stoplight:
-                      id: p8ct7x9tongy1
-                    items:
-                      $ref: '#/components/schemas/v1Comment'
-                      x-stoplight:
-                        id: 6g7fzmgb6dhfd
+                      id: 2vbn4yybkjk6z
+                    required:
+                      - comments
+                    properties:
+                      comments:
+                        type: array
+                        x-stoplight:
+                          id: mx57bqo0k2yjn
+                        items:
+                          $ref: '#/components/schemas/v1Comment'
+                          x-stoplight:
+                            id: qoow74ra3q580
                 required:
                   - code
                   - sutatus
-                  - comments
+                  - data
               examples:
                 Example 1:
                   value:
@@ -719,7 +748,7 @@ paths:
                         id: mhefjl79xgavi
                       type: object
                       properties:
-                        title:
+                        seriesTitle:
                           type: string
                           x-stoplight:
                             id: q9dxy00uydr7i
@@ -736,7 +765,7 @@ paths:
                             x-stoplight:
                               id: tjlcm6vwrgedp
                       required:
-                        - title
+                        - seriesTitle
                         - seriesUrl
                         - movies
                 required:
