@@ -12,7 +12,7 @@ servers: []
 paths:
   /auth:
     post:
-      summary: ''
+      summary: 認証API
       operationId: post-auth
       responses:
         '200':
@@ -68,7 +68,7 @@ paths:
                     code: '401'
                     status: fail
                     message: incorrect username or password
-      description: 認証用API
+      description: ログイン認証用API
       requestBody:
         content:
           multipart/form-data:
@@ -87,9 +87,10 @@ paths:
                 - username
                 - password
         description: ''
+      x-internal: false
   /tryAuth:
     get:
-      summary: Your GET endpoint
+      summary: トークン検証API
       tags: []
       responses:
         '200':
@@ -151,9 +152,10 @@ paths:
           in: cookie
           name: token
           description: 認証トークン
+      description: ログイン用トークンが有効化の検証を行うAPI
   /logout:
     get:
-      summary: Your GET endpoint
+      summary: ログアウトAPI
       tags: []
       responses:
         '200':
@@ -208,17 +210,18 @@ paths:
                     code: '401'
                     status: fail
                     message: invalid token
-      operationId: get-tryAuth
+      operationId: get-logout
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
+      description: ログイン用トークンを削除するAPI
     parameters: []
-  /movie:
+  '/movie/{movieUrl}':
     get:
-      summary: Your GET endpoint
+      summary: 動画情報API
       tags: []
       responses:
         '200':
@@ -290,7 +293,33 @@ paths:
                   - code
                   - sutatus
                   - data
-              examples: {}
+              examples:
+                Example 1:
+                  value:
+                    code: '200'
+                    sutatus: success
+                    data:
+                      playlist:
+                        - id: 0
+                          url: string
+                          seriesUrl: string
+                          title: string
+                          seriesTitle: string
+                          duration: 0
+                          addAt: 0
+                      movie:
+                        id: 0
+                        url: string
+                        seriesUrl: string
+                        title: string
+                        seriesTitle: string
+                        duration: 0
+                        addAt: 0
+                      prev: null
+                      next: null
+                      source:
+                        http: 'https://example.com/hoge.mp4'
+                        hls: 'https://example.com/hoge.m3u8'
         '401':
           description: Unauthorized
           content:
@@ -320,17 +349,23 @@ paths:
                     code: '401'
                     status: fail
                     message: invalid token
-      operationId: get-tryAuth
+      operationId: get-movie
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
-    parameters: []
-  /search:
+      description: 再生ページで使用する動画情報を取得するAPI
+    parameters:
+      - schema:
+          type: string
+        name: movieUrl
+        in: path
+        required: true
+  '/search/{query}':
     get:
-      summary: Your GET endpoint
+      summary: 検索API
       tags: []
       responses:
         '200':
@@ -393,6 +428,18 @@ paths:
                   value:
                     code: '200'
                     sutatus: success
+                    data:
+                      movies:
+                        - id: 0
+                          url: string
+                          seriesUrl: string
+                          title: string
+                          seriesTitle: string
+                          duration: 0
+                          addAt: 0
+                      series:
+                        - seriesTitle: string
+                          seriesUrl: string
         '401':
           description: Unauthorized
           content:
@@ -424,17 +471,23 @@ paths:
                     message: invalid token
         '':
           description: ''
-      operationId: get-tryAuth
+      operationId: get-search
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
-    parameters: []
-  /series:
+      description: 検索結果を返すAPI
+    parameters:
+      - schema:
+          type: string
+        name: query
+        in: path
+        required: true
+  '/series/{seriesUrl}':
     get:
-      summary: Your GET endpoint
+      summary: シリーズ取得API
       tags: []
       responses:
         '200':
@@ -481,6 +534,16 @@ paths:
                   value:
                     code: '200'
                     sutatus: success
+                    data:
+                      movies:
+                        - id: 0
+                          url: string
+                          seriesUrl: string
+                          title: string
+                          seriesTitle: string
+                          duration: 0
+                          addAt: 0
+                      seriesTitle: string
         '401':
           description: Unauthorized
           content:
@@ -541,17 +604,23 @@ paths:
                     message: not found
         '':
           description: ''
-      operationId: get-tryAuth
+      operationId: get-series
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
-    parameters: []
-  /comments:
+      description: シリーズに含まれる動画一覧を取得するAPI
+    parameters:
+      - schema:
+          type: string
+        name: seriesUrl
+        in: path
+        required: true
+  '/comments/{movieUrl}':
     get:
-      summary: Your GET endpoint
+      summary: コメント取得API
       tags: []
       responses:
         '200':
@@ -593,6 +662,21 @@ paths:
                   value:
                     code: '200'
                     sutatus: success
+                    data:
+                      comments:
+                        - body: string
+                          commands:
+                            - string
+                          id: string
+                          isMyPost: true
+                          isPremium: true
+                          nicoruCount: 0
+                          'no': 0
+                          postedAt: string
+                          score: 0
+                          source: string
+                          userId: string
+                          vposMs: 0
         '401':
           description: Unauthorized
           content:
@@ -622,17 +706,23 @@ paths:
                     code: '401'
                     status: fail
                     message: invalid token
-      operationId: get-tryAuth
+      operationId: get-comments
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
-    parameters: []
+      description: 動画に紐付けられたコメントを取得するためのAPI
+    parameters:
+      - schema:
+          type: string
+        name: movieUrl
+        in: path
+        required: true
   '/suggest/{query}':
     get:
-      summary: Your GET endpoint
+      summary: 検索サジェストAPI
       tags: []
       responses:
         '200':
@@ -705,14 +795,14 @@ paths:
                     code: '401'
                     status: fail
                     message: invalid token
-      operationId: get-tryAuth
+      operationId: get-suggest
       parameters:
         - schema:
             type: string
           in: cookie
           name: token
           description: 認証トークン
-      description: 検索用サジェストAPI
+      description: 検索のサジェスト用API
     parameters:
       - schema:
           type: string
@@ -721,7 +811,7 @@ paths:
         required: true
   /recentUpdates:
     get:
-      summary: Your GET endpoint
+      summary: 直近更新API
       tags: []
       responses:
         '200':
@@ -777,6 +867,17 @@ paths:
                   value:
                     code: '200'
                     sutatus: success
+                    data:
+                      - seriesTitle: string
+                        seriesUrl: string
+                        movies:
+                          - id: 0
+                            url: string
+                            seriesUrl: string
+                            title: string
+                            seriesTitle: string
+                            duration: 0
+                            addAt: 0
         '401':
           description: Unauthorized
           content:
@@ -806,7 +907,7 @@ paths:
                     code: '401'
                     status: fail
                     message: invalid token
-      operationId: get-tryAuth
+      operationId: get-recentUpdates
       parameters:
         - schema:
             type: string
@@ -823,7 +924,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: サムネイルAPI
       tags: []
       responses:
         '200':
@@ -867,7 +968,8 @@ paths:
             image/png:
               schema:
                 type: string
-      operationId: get-img-movieUrl
+      operationId: get-img
+      description: サムネイルの画像データを返すAPI
 components:
   schemas:
     Movie:
